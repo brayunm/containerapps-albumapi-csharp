@@ -41,7 +41,7 @@ jobs:
           registryPassword: ${{ secrets.CAALBUMAPI_REGISTRY_PASSWORD }}
           containerAppName: ca-album-api
           resourceGroup: rg-sentry-tryout
-          imageToBuild: registry.hub.docker.com/ca-album-api:${{ github.sha }}
+          imageToBuild: docker.io/ca-album-api:${{ github.sha }}
           _buildArgumentsKey_: |
             _buildArgumentsValues_
 
