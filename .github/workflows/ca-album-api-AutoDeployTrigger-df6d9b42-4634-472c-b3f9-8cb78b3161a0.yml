@@ -36,7 +36,7 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}/src
           _dockerfilePathKey_: _dockerfilePath_
-          registryUrl: registry.hub.docker.com
+          registryUrl: docker.io
           registryUsername: ${{ secrets.CAALBUMAPI_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.CAALBUMAPI_REGISTRY_PASSWORD }}
           containerAppName: ca-album-api
