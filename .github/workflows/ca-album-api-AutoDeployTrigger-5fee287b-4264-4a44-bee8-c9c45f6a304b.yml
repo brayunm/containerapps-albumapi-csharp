@@ -1,0 +1,48 @@
+name: Trigger auto deployment for ca-album-api
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/ca-album-api-AutoDeployTrigger-5fee287b-4264-4a44-bee8-c9c45f6a304b.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.CAALBUMAPI_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.CAALBUMAPI_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.CAALBUMAPI_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.CAALBUMAPI_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CAALBUMAPI_REGISTRY_PASSWORD }}
+          containerAppName: ca-album-api
+          resourceGroup: rg-sentry-tryout
+          imageToBuild: brayun/ca-album-api:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
