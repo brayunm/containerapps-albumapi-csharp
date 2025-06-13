@@ -40,6 +40,12 @@ app.MapGet("/albums", () =>
 })
 .WithName("GetAlbums");
 
+app.MapGet("/albums/{id:int}", async (int id) =>
+{
+    return Album.GetById(id);
+})
+.WithName("GetAlbum");
+
 app.MapGet("/error", () =>
 {
     try
@@ -70,5 +76,10 @@ record Album(int Id, string Title, string Artist, double Price, string Image_url
     
      public static List<Album> GetAll(){
         return albums; 
+     }
+
+     public static Album? GetById(int id)
+     {
+         return albums.FirstOrDefault(x => x.Id == id);
      }
 }
