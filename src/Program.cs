@@ -40,6 +40,20 @@ app.MapGet("/albums", () =>
 })
 .WithName("GetAlbums");
 
+app.MapGet("/error", () =>
+{
+    try
+    {
+        throw null;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        SentrySdk.CaptureException(e);
+    }
+    return "Something went wrong";
+});
+
 app.Run();
 
 record Album(int Id, string Title, string Artist, double Price, string Image_url, string Description)
