@@ -1,6 +1,9 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseSentry();
+builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
