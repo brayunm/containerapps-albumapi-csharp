@@ -55,18 +55,22 @@ app.MapGet("/albums/{id:int}", async (int id) =>
 
 app.MapGet("/error", () =>
 {
-    // try
-    // {
-    //     throw null;
-    // }
-    // catch (Exception e)
-    // {
-    //     Console.WriteLine(e);
-    //     SentrySdk.CaptureException(e);
-    //     app.Logger.LogError(e, "An exception occurred");
-    // }
-    // return "Something went wrong";
-    throw new Exception("Something went wrong");
+    try
+    {
+        throw null;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        SentrySdk.CaptureException(e);
+        app.Logger.LogError(e, "An exception occurred");
+    }
+    return "Something went wrong";
+});
+
+app.MapGet("/error-uncaught", () =>
+{
+    throw new Exception("Something went wrong - uncaught exception");
 });
 
 app.Run();
